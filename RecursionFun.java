@@ -13,14 +13,19 @@
  * 
  * We will not be using code coverage for points.
  *
- * @author Rick Mercer and Your Name
+ * @author Rick Mercer and Alexander Thompson
  */
 public class RecursionFun {
 
   // Complete recursive method combinations that returns from n choose k.
   // This method is described in 17_SimpleRecursion.pptx.
   public int combinations(int n, int k) {
-    return Integer.MIN_VALUE;
+    if(n==k)
+    	return 1;
+    else if (k==1)
+    	return n;
+    else
+    	return combinations(n-1,k-1)+combinations(n-1,k);
   }
 
  
@@ -34,8 +39,14 @@ public class RecursionFun {
   //
   // Precondition: n >= 0
   public String intWithCommas(int n) {
-    // TODO: Implement this method using recursion. Do not use a loop
-    return "Under construction";
+	if (n/100 < 10)
+		return Integer.toString(n);
+	String retnum = Integer.toString(n%1000);
+	if (n % 1000 < 10) 
+		retnum = "0" + retnum;
+	if (n % 1000 < 100) 
+		retnum = "0" + retnum;
+    return intWithCommas(n/1000) + "," + retnum;
   }
 
   // Write recursive method reverseArray that reverses the array elements in a
@@ -58,8 +69,20 @@ public class RecursionFun {
   }
 
   private void reverseArray(int[] x, int index, int len) {
-    // TODO: Complete this method with a recursive algorithm. 
-    // Do NOT use a loop.
+    if (index==(x.length-1)/2) {
+    	if (x.length%2 == 0) {
+    		int swap = x[index];
+        	x[index] = x[len-1];
+        	x[len-1] = swap;
+    	}
+    	return;
+    }
+    else {
+    	int swap = x[index];
+    	x[index] = x[len-1];
+    	x[len-1] = swap;
+    	reverseArray(x, index+1, len-1);
+    }
   }
 
   // Write recursive method arrayRange that returns the maximum
@@ -67,19 +90,59 @@ public class RecursionFun {
   // integers, Use recursion; do not use a loop. 
   // Precondition: a.length > 0
   public int arrayRange(int[] a) {
-    return Integer.MIN_VALUE;
+	
+    return maxHelper(a, 0) - minHelper(a, 0);
   }
 
-  // Return true if nums has all int elements in ascending order.
+  private int minHelper(int[] a, int i) {
+	if (i == a.length)
+			return Integer.MAX_VALUE;
+	else
+		return Math.min(a[i], minHelper(a,i+1));
+}
+
+
+private int maxHelper(int[] a, int pos) {
+	if (pos == a.length)
+		return Integer.MIN_VALUE;
+	else
+		return Math.max(a[pos], maxHelper(a,pos+1));
+}
+
+
+// Return true if nums has all int elements in ascending order.
   // If not isSorted, return false.
   public boolean isSorted(int[] nums) {
+	if (nums.length == 0)
+		return true;
     // Need to send down 0 to keep track of the index
-    return ! true;
+    return isSorted(nums, 0);
   }
 
-  // Complete method found to return true if search is found in strs.
+  private boolean isSorted(int[] nums, int i) {
+	if (i == nums.length-1)
+		return true;
+	else if (nums[i] > nums[i+1])
+		return false;
+	else
+		return isSorted(nums, i+1);
+}
+
+
+// Complete method found to return true if search is found in strs.
   // If not found, return false. Use equals, not ==.
   public boolean found(String search, String[] strs) {
-     return ! true;
+     
+	 return found(search, strs, 0);
   }
+
+
+private boolean found(String search, String[] strs, int i) {
+	if (i == strs.length)
+		return false;
+	else if (search.equals(strs[i]))
+		return true;
+	else
+		return found(search, strs, i+1);
+}
 }

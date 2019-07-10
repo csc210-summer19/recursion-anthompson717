@@ -9,7 +9,7 @@
  *   void removeAll(E)
  *   void duplicateAll(E) 
  * 
- * @author Rick Mercer and Your Name
+ * @author Rick Mercer and Alexander Thompson
  */
 public class LinkedList<E extends Comparable<E>> {
   // extends Comparable<E> means the type must be comparable to avoid CT errors
@@ -102,14 +102,18 @@ public class LinkedList<E extends Comparable<E>> {
   // Return a reference to the element at the given index.
   // Precondition: 0 >= index < size 
   public E get(int index) {
+	if (size() == 0)
+		return null;
     // This public method requires a private helper method with first 
     // as an argument. Here is an example with the helper immediately below
     return get(first, 0, index);
   }
 
   private E get(Node ref, int startIndex, int stopIndex) {
-    // TODO: Complete this method using recursion, no loop allowed.
-    return null;
+    if (startIndex == stopIndex)
+    	return ref.data;
+    else
+    	return get(ref.next, startIndex+1,stopIndex);
   }
  
   
@@ -118,14 +122,48 @@ public class LinkedList<E extends Comparable<E>> {
   public void removeAll(E el) {
     // This public method requires a call to a private helper method
     // with first as an argument. It must be recursive, no loop allowed.
+	removeall(el, first);
   }
 
-  // Duplicate el next to each occurrence of el in this list.
+  private void removeall(E el, Node ref) {
+	if (ref == null) {
+		return;
+	}
+	else if (first.data.equals(el)) {
+		first = first.next;
+		n--;
+		removeall(el, ref.next);
+	}
+	else if (ref.next.data.equals(el)) {
+		ref.next = ref.next.next;
+		n--;
+		removeall(el, ref.next);
+	}
+	else
+		removeall(el, ref.next);
+}
+
+
+
+// Duplicate el next to each occurrence of el in this list.
   public void duplicateAll(E el) {
+	duplicateAll(el,first);
     // This public method requires a call to a private helper method
     // with first as an argument. It must be recursive, no loop allowed.
   }
-
-
-
+  
+private void duplicateAll(E el, Node ref) {
+	Node temp = new Node(el);
+	if (ref == null)
+		return;
+	else if (ref.data.equals(el)) {
+		Node next = ref.next;
+		ref.next = temp;
+		temp.next = next;
+		n++;
+		duplicateAll(el, ref.next.next);
+	}
+	else
+		duplicateAll(el, ref.next);
+}
 }

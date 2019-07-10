@@ -71,12 +71,58 @@ public class ObstacleCourse {
    * col where the exit was found
    */
   private boolean findExit(int row, int col) {
-    // TODO: Complete this method
-    //
+    boolean escaped = false;
+    if (course[row][col] == ' ')
+    	course[row][col] = TRIED;
+    if (onBorder(row, col)) {
+    	escaped = true;
+    	foundCol = col;
+    	foundRow = row;
+    	course[row][col] = PART_OF_PATH;
+    }
+    else {
+    	/*
+    	course[sRow][sCol] = '.';
+    	if (course[row-1][col] == ' ') {
+    		sRow--;
+    		return findExit(row-1, col);
+    	}
+    	else if (course[row+1][col] == ' ') {
+    		sRow++;
+    		return findExit(row+1, col);
+    	}
+    	else if (course[row][col-1] == ' ') {
+    		sCol--;
+    		return findExit(row, col-1);
+    	}
+    	else if (course[row][col+1] == ' ') {
+    		sCol++;
+    		return findExit(row, col+1);
+    	}
+    	else
+    		return false;
+    		*/
+    	escaped = findExit(row, col-1);
+    	
+    	if (!escaped)
+    		escaped = findExit(row+1, col);
+    	
+    	if (!escaped)
+    		escaped = findExit(row, col+1);
+    	
+    	if (!escaped)
+    		escaped = findExit(row-1, col);
+    }
+    return escaped;
     // Do not forget to set the instance variable foundRow and 
     // foundCol in this method when the exit is found.
-    //
-    return !false;
   }
+
+private boolean onBorder(int row, int col) {
+	if (row == 0 || col == 0 || row == course.length-1 || col == course[0].length-1)
+		return true;
+	else
+		return false;
+}
 
 }
